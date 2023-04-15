@@ -2,6 +2,7 @@ package edu.pet.cloudstorage.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,7 +15,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Entity
 @Table(name="Users")
 public class User implements UserDetails {
@@ -24,7 +25,7 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private final Long id;
 
     @Column(nullable=false, unique=true)
     private String username;

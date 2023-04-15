@@ -41,6 +41,7 @@ public class SecurityConfig {
                         authorize
                                 .requestMatchers("/api/**").permitAll()
                                 .requestMatchers("/").permitAll()
+                                .requestMatchers("/storage").authenticated()
                                 .requestMatchers("/login", "/register").anonymous()
 
 
@@ -53,9 +54,13 @@ public class SecurityConfig {
                                 )
                 .logout(logout ->
                         logout
+                                /*.deleteCookies("JSESSIONID")*/
                                 .logoutSuccessUrl("/login")
                                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                                 ).anonymous().and()
+                /*.rememberMe()
+                .key("uniqueAndSecret")
+                .and()*/
                 .build();
     }
 
