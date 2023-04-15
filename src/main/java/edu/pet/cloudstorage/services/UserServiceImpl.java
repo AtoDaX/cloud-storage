@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public edu.pet.cloudstorage.model.User save(UserDTO userDTO) {
+    public edu.pet.cloudstorage.model.User save(RegistrationDTO userDTO) {
         if (roleRepository.findByName("USER_ROLE") == null){
             roleRepository.save(new Role("USER_ROLE"));
         }

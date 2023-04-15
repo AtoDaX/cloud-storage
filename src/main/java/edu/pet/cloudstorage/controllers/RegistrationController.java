@@ -26,29 +26,36 @@ public class RegistrationController {
 
     @GetMapping
     public String registrationPage(Model model){
-        UserDTO user = new UserDTO();
+        RegistrationDTO user = new RegistrationDTO();
         model.addAttribute("user", user);
         return "registration";
     }
 
     @PostMapping
-    public String registerUser(@Valid @ModelAttribute("user") UserDTO userDTO,
+    public String registerUser(@Valid @ModelAttribute("user") RegistrationDTO userDTO,
                                BindingResult result,
                                Model model){
         User existingUser = userService.findUserByUsername(userDTO.getUsername());
+        if (!userDTO.getPassword().equals(userDTO.getPasswordRepeat())){
+            result.rejectValue("passwordRepeat", null,
+                    "Passswords are not equal!");
+
+        }
 
         if(existingUser != null && existingUser.getUsername() != null && !existingUser.getUsername().isEmpty()){
-            result.rejectValue("email", null,
+            result.rejectValue("username", null,
                     "There is already an account registered with the same email");
         }
 
+
         if(result.hasErrors()){
             model.addAttribute("user", userDTO);
-            return "/register";
+            return "registration";
         }
 
         userService.save(userDTO);
         return "redirect:/login";
     }
+
 
 }

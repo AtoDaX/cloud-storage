@@ -27,18 +27,22 @@
   <div class="row justify-content-center">
 
     <div class="col-6 align-content-center">
-      <form method="POST" th:action="@{/register}" th:object="${user}">
+      <form method="POST" role="form" th:action="@{/register}" th:object="${user}">
         <div class="mb-3">
-          <label for="inputLogin" class="form-label">Username</label>
-          <input type="text" class="form-control" id="inputLogin" th:field="*{username}">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="username" name="username" th:field="*{username}">
+          <span th:errors = "*{username}" class="text-danger"
+             th:if="${#fields.hasErrors('username')}"></span>
         </div>
         <div class="mb-3">
-          <label for="inputPassword1" class="form-label">Password</label>
-          <input type="password" class="form-control" id="inputPassword1" th:field="*{password}">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password" th:field="*{password}">
         </div>
         <div class="mb-3">
-          <label for="inputPassword2" class="form-label">Password</label>
-          <input type="password" class="form-control" id="inputPassword2">
+          <label for="passwordRepeat" class="form-label">Password</label>
+          <input type="password" class="form-control" name="passwordRepeat" id="passwordRepeat" th:field="*{passwordRepeat}">
+          <span th:errors = "*{passwordRepeat}" class="text-danger"
+                th:if="${#fields.hasErrors('passwordRepeat')}"></span>
         </div>
         <button type="submit" class="btn btn-primary">Register</button>
       </form>

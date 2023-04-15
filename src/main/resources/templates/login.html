@@ -28,6 +28,15 @@
 
         <div class="col-6 align-content-center">
             <form method="POST" th:action="@{/login}" >
+                <div class="mb-3" th:if="${param.error}">
+                    <div class="alert alert-danger">Invalid Email or Password</div>
+                </div>
+                <div class="mb-3" th:if="${param.logout}">
+                    <div class="alert alert-success"> You have been logged out.</div>
+                </div>
+                <div class="mb-5" th:if="${param.isEmpty()}">
+                    <div class=> </div>
+                </div>
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" class="form-control" id="username" name="username">
