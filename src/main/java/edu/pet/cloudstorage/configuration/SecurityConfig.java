@@ -38,20 +38,24 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .authorizeHttpRequests((authorize) ->
-                        authorize.requestMatchers("/", "/h2-console","/api/**").permitAll()
-                                .requestMatchers("/login", "/register").permitAll()
-                                .requestMatchers("/storage").hasRole("USER"))
+                        authorize
+                                .requestMatchers("/api/**").permitAll()
+                                .requestMatchers("/").authenticated()
+                                .requestMatchers("/login", "/register").anonymous()
 
-                .formLogin(form ->
+
+                                )
+
+                .formLogin((form) ->
                         form.loginPage("/login")
                                 .loginProcessingUrl("/login")
-                                .defaultSuccessUrl("/storage", true)
-                                .permitAll())
+                                .defaultSuccessUrl("/", true)
+                                )
                 .logout(logout ->
                         logout
-                                .logoutSuccessUrl("/")
+                                .logoutSuccessUrl("/login")
                                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                                .permitAll())
+                                ).anonymous().and()
                 .build();
     }
 

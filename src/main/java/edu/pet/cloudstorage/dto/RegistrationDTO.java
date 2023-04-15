@@ -3,8 +3,6 @@ package edu.pet.cloudstorage.dto;
 import lombok.Data;
 
 @Data
-public class RegistrationDTO {
-    private String username;
-    private String password;
+public class RegistrationDTO extends UserDTO {
     private String passwordRepeat;
 }
