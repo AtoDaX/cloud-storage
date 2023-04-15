@@ -1,1 +1,16 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    name: cloudstorageh2
+    generate-unique-name: false
+  session:
+    redis:
+      save-mode: always
+  data:
+    redis:
+      host: localhost
+      password:
+      port: 6379
 
