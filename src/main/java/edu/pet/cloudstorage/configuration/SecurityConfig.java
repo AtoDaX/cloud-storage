@@ -41,10 +41,8 @@ public class SecurityConfig {
                         authorize
                                 .requestMatchers("/api/**").permitAll()
                                 .requestMatchers("/").permitAll()
-                                .requestMatchers("/storage").authenticated()
+                                .requestMatchers("/storage", "/storage/**").authenticated()
                                 .requestMatchers("/login", "/register").anonymous()
-
-
                                 )
 
                 .formLogin((form) ->

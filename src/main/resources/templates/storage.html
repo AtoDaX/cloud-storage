@@ -10,6 +10,16 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary mb-5">
   <div class="container-fluid">
     <a class="navbar-brand" th:href="@{/}">Cloud Storage</a>
+    <form class="d-flex input-group w-auto">
+      <input
+              type="search"
+              class="form-control rounded"
+              placeholder="Search"
+              aria-label="Search"
+              aria-describedby="search-addon"
+      />
+      <button type="submit" class="btn btn-light">Search</button>
+    </form>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
@@ -25,35 +35,37 @@
 
 <div class="container">
   <div class="row justify-content-center">
-
-
-
+    <div class="col-6 align-content-center">
+      <form class="input-group mt-4" th:action="@{/storage/upload-file}" th:object="${file}"
+            method="POST"
+            id="1"
+            enctype="multipart/form-data">
+        <div class="input-group mt-4">
+          <input type="hidden" th:field="*{path}">
+          <input type="file" name="file" th:field="*{file}" class="form-control" id="inputGroupFile01"
+                 aria-describedby="inputGroupFileAddon01" aria-label="Upload" required/>
+          <button type="submit" class="btn btn-primary" id="inputGroupFileAddon01">Upload</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-6 align-content-center">
+      <form class="input-group mt-4" th:action="@{/storage/upload-directory}" th:object="${directory}"
+            method="POST"
+            id="2"
+            enctype="multipart/form-data">
+        <div class="input-group mt-4">
+          <input type="hidden" th:field="*{path}">
+          <input type="file" th:field="*{files}" class="form-control" id="inputGroupFile02"
+                 aria-describedby="inputGroupFileAddon01" aria-label="Upload" webkitdirectory directory multiple
+                 required />
+          <button type="submit" class="btn btn-primary" id="inputGroupFileAddon02">Upload</button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 
 <footer class="bg-light text-center text-lg-start fixed-bottom">
-  <div class="container p-4">
-    <div class="row">
-      <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-        <h5 class="text-uppercase">Footer text</h5>
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis
-          molestias.
-        </p>
-      </div>
-
-      <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-        <h5 class="text-uppercase">Footer text</h5>
-
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis
-          molestias.
-        </p>
-      </div>
-
-    </div>
-
-  </div>
   <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
     <a class="text-dark" href="https://github.com/AtoDaX">Github</a>
   </div>

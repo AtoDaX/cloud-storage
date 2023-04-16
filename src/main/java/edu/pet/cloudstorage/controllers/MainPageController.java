@@ -17,7 +17,7 @@ public class MainPageController {
     @GetMapping
     public String show(@AuthenticationPrincipal User user){
         if (user==null){
-            return "index";
+            return "redirect:/login";
         }
         return "redirect:/storage";
     }
