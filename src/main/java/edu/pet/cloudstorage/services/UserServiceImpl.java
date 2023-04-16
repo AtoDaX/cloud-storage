@@ -1,7 +1,6 @@
 package edu.pet.cloudstorage.services;
 
 import edu.pet.cloudstorage.dto.RegistrationDTO;
-import edu.pet.cloudstorage.dto.UserDTO;
 import edu.pet.cloudstorage.model.Role;
 import edu.pet.cloudstorage.model.User;
 import edu.pet.cloudstorage.repositories.RoleRepository;
@@ -13,9 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;

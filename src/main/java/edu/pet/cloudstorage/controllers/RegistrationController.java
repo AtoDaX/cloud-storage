@@ -1,7 +1,6 @@
 package edu.pet.cloudstorage.controllers;
 
 import edu.pet.cloudstorage.dto.RegistrationDTO;
-import edu.pet.cloudstorage.dto.UserDTO;
 import edu.pet.cloudstorage.model.User;
 import edu.pet.cloudstorage.services.UserService;
 import edu.pet.cloudstorage.services.UserServiceImpl;
