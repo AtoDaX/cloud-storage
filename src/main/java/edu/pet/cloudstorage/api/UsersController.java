@@ -1,6 +1,7 @@
 package edu.pet.cloudstorage.api;
 
 import edu.pet.cloudstorage.model.User;
+import edu.pet.cloudstorage.repositories.RoleRepository;
 import edu.pet.cloudstorage.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,12 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class UsersController {
     UserRepository userRepository;
     @Autowired
-    public UsersController(UserRepository userRepository){
+    public UsersController(UserRepository userRepository,
+                           RoleRepository roleRepository){
         this.userRepository = userRepository;
     }
 
     @GetMapping
     public Iterable<User> findAll(){
+
+
         return userRepository.findAll();
     }
 }

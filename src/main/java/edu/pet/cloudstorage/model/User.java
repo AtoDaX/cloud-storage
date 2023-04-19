@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -15,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Entity
 @Table(name="Users")
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
 
     @Transient
     private static final long serialVersionUID = 1L;
