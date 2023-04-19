@@ -12,10 +12,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@EnableRedisHttpSession
 public class SecurityConfig {
     private final UserService userService;
 

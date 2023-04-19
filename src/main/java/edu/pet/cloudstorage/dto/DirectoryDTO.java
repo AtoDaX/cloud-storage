@@ -9,4 +9,6 @@ import java.util.List;
 public class DirectoryDTO {
     private String path;
     private List<MultipartFile> files;
+
+
 }
