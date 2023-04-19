@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/storage")
@@ -28,11 +30,25 @@ public class StorageController {
     }
     @GetMapping
     public String showStorage(@AuthenticationPrincipal User user,
-                              Model model){
+                              Model model) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
 
         FileDTO file = new FileDTO();
         DirectoryDTO directory = new DirectoryDTO();
+        String path = "";
+        if (model.containsAttribute("path")){
+            path = model.getAttribute("path").toString();
+        }
 
+
+
+        Map<String, List<String>> allItems = storageService.getDirectory(path, user);
+        //TODO вынести dir+files в общие константы
+        List<String> allDirectories = allItems.get("dir");
+        List<String> allFiles = allItems.get("file");
+
+
+        model.addAttribute("allDirectories", allDirectories);
+        model.addAttribute("allFiles", allFiles);
         model.addAttribute("user",user);
         model.addAttribute("file", file);
         model.addAttribute("directory", directory);

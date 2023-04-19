@@ -1,9 +1,11 @@
 package edu.pet.cloudstorage.repositories;
 
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
+import edu.pet.cloudstorage.model.User;
+import io.minio.*;
 import io.minio.errors.*;
+import io.minio.messages.Item;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
@@ -32,6 +34,16 @@ public class FileRepository {
                         .stream(inputStream, -1, 10485760)
                 .contentType("application/octet-stream")
                 .build());
+    }
+
+    public Iterable<Result<Item>> getFilesInDirectory(String path) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        Iterable<Result<Item>> results = minioClient.listObjects(
+                ListObjectsArgs.builder()
+                        .bucket(BUCKET_NAME)
+                        .prefix(path)
+                        .build());
+        return results;
+
     }
 
 

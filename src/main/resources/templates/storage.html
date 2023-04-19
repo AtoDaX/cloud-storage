@@ -33,7 +33,7 @@
   </div>
 </nav>
 
-<div class="container">
+<div class="container mb-5">
   <div class="row justify-content-center">
     <div class="col-6 align-content-center">
 
@@ -63,6 +63,38 @@
         </div>
       </form>
 
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row ">
+
+    <div class="col-2 align-content-center">
+      <div class="card " style="width: 8rem;">
+        <a th:href="@{#}"><img th:src="@{images/add-folder.png}" class="card-img-top" alt="Add folder"></a>
+        <div class="card-body">
+          <h6 class="card-title"> <a th:href="@{#}">Add folder</a></h6>
+        </div>
+      </div>
+    </div>
+
+    <div th:each="browseDirectory: ${allDirectories}" class="col-2 align-content-center ">
+      <div  class="card" style="width: 8rem;">
+        <a th:href="@{#}"><img th:src="@{images/browse-folder.png}" class="card-img-top" th:alt="${browseDirectory}"></a>
+        <div class="card-body">
+          <h6 class="card-title"> <a th:href="@{#}" th:text="${browseDirectory}">Folder name</a></h6>
+        </div>
+      </div>
+    </div>
+
+    <div th:each="browseFile: ${allFiles}" class="col-2 align-content-center ">
+      <div  class="card" style="width: 8rem;">
+        <a th:href="@{#}"><img th:src="@{images/file.png}" class="card-img-top" th:alt="${browseFile}"></a>
+        <div class="card-body">
+          <h6 class="card-title"> <a th:href="@{#}" th:text="${browseFile}">File name</a></h6>
+        </div>
+      </div>
     </div>
   </div>
 </div>
