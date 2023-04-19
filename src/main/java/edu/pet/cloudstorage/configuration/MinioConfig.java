@@ -10,7 +10,7 @@ public class MinioConfig {
     public MinioClient minioClient(){
         MinioClient minioClient = MinioClient.builder()
                 .endpoint("http://127.0.0.1:9000")
-                //TODO пожключать через json
+                //TODO подключать через json
                 .credentials("0KMBweoaAXG0KrcV", "rTvuCpiXnFq9zU1z0oQQKRIieey7wS4V")
                 .build();
         return minioClient;
