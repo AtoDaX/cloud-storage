@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -28,15 +29,19 @@ public class StorageController {
     public StorageController(StorageService storageService){
         this.storageService = storageService;
     }
-    @GetMapping
+    @GetMapping()
     public String showStorage(@AuthenticationPrincipal User user,
-                              Model model) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+                              Model model,
+                              @RequestParam(required = false) String path) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
 
         FileDTO file = new FileDTO();
         DirectoryDTO directory = new DirectoryDTO();
-        String path = "";
-        if (model.containsAttribute("path")){
-            path = model.getAttribute("path").toString();
+
+
+        if (path == null){
+            path="";
+        } else {
+            path = path.concat("/");
         }
 
 
@@ -46,7 +51,7 @@ public class StorageController {
         List<String> allDirectories = allItems.get("dir");
         List<String> allFiles = allItems.get("file");
 
-
+        model.addAttribute("path", path);
         model.addAttribute("allDirectories", allDirectories);
         model.addAttribute("allFiles", allFiles);
         model.addAttribute("user",user);

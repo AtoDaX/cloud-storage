@@ -83,7 +83,7 @@
       <div  class="card" style="width: 8rem;">
         <a th:href="@{#}"><img th:src="@{images/browse-folder.png}" class="card-img-top" th:alt="${browseDirectory}"></a>
         <div class="card-body">
-          <h6 class="card-title"> <a th:href="@{#}" th:text="${browseDirectory}">Folder name</a></h6>
+          <h6 class="card-title"> <a th:href="@{'/storage?path=' + ${path} + ${browseDirectory}}" th:text="${browseDirectory}">Folder name</a></h6>
         </div>
       </div>
     </div>
