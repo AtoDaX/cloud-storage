@@ -31,7 +31,7 @@ public class FileRepository {
         minioClient.putObject(PutObjectArgs.builder()
                 .bucket(BUCKET_NAME)
                 .object(objectName)
-                        .stream(inputStream, -1, 10485760)
+                .stream(inputStream, -1, 10485760)
                 .contentType("application/octet-stream")
                 .build());
     }
@@ -49,7 +49,13 @@ public class FileRepository {
 
 
 
-    public void remove() {
+
+
+
+    public void remove(String path, String name) {
+        RemoveObjectArgs.builder().bucket(BUCKET_NAME)
+                        .object(path+name).build();
+
 
     }
 

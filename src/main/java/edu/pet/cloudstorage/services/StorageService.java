@@ -11,12 +11,14 @@ import io.minio.Result;
 import io.minio.errors.*;
 import io.minio.messages.Item;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
@@ -55,7 +57,15 @@ public class StorageService {
         }
     }
 
-    public Map<String, List<String>> getDirectory(String path, @AuthenticationPrincipal User user) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public void createDirectory(String path, String name, User user) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+
+        fileRepository.upload(Utils.getUserDirectory(user) + path + name + "/", new ByteArrayInputStream(new byte[]{}));
+
+
+    }
+
+    public Map<String, List<String>> getDirectory(String path, User user) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        System.out.println(path);
         Iterable<Result<Item>> fileList = fileRepository.getFilesInDirectory(Utils.getUserDirectory(user)+path);
         List<String > directories = new ArrayList<>();
         List<String > files = new ArrayList<>();
