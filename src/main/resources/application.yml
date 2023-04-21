@@ -5,8 +5,12 @@ spring:
   thymeleaf:
     cache: false
   datasource:
-    name: cloudstorageh2
+    name: MySQL
     generate-unique-name: false
+    hikari:
+      username: root
+      password: password
+    url: jdbc:mysql://localhost:3306/USER_INFO?useSSL=false
   session:
     redis:
       save-mode: always
@@ -15,4 +19,10 @@ spring:
       host: localhost
       password:
       port: 6379
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    database: mysql
+
 
