@@ -35,17 +35,7 @@
 </nav>
 
 <div class="container mb-5">
-  <div class="rov justify-content-center">
-    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item" th:each="breadCrumb : ${breadcrumbs}">
-          <a th:href="@{'/storage?path=' + ${breadCrumb.url}}" th:unless="${breadCrumb.isCurrent}"
-             th:text="${breadCrumb.name}">Home</a>
-          <span class="breadcrumb-item active" th:if="${breadCrumb.isCurrent}"
-                th:text="${breadCrumb.name}">Home</span>
-      </ol>
-    </nav>
-  </div>
+
   <div class="row justify-content-center">
     <div class="col-6 align-content-center">
 
@@ -78,6 +68,17 @@
 </div>
 
 <div class="container">
+  <div class="row justify-content-center">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item" th:each="breadCrumb : ${breadcrumbs}">
+          <a th:href="@{'/storage?path=' + ${breadCrumb.getPath}}" th:unless="${breadCrumb.isCurrent}"
+             th:text="${breadCrumb.name}">Home</a>
+          <span class="breadcrumb-item active" th:if="${breadCrumb.isCurrent}"
+                th:text="${breadCrumb.name}">Home</span>
+      </ol>
+    </nav>
+  </div>
   <div class="row ">
 
     <div class="col-2 align-content-center">

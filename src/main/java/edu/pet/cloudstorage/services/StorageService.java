@@ -12,11 +12,9 @@ import io.minio.Result;
 import io.minio.errors.*;
 import io.minio.messages.Item;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -56,6 +54,7 @@ public class StorageService {
     }
 
     public void createDirectory(String path, String name, User user) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        File hello = new File("hello.txt");
 
         fileRepository.create(Utils.getUserDirectory(user) + path + name + "/", new ByteArrayInputStream(new byte[]{}));
 
@@ -118,8 +117,6 @@ public class StorageService {
                 Breadcrumb breadCrumb = new Breadcrumb();
 
                 String encodedPath = URLEncoder.encode(path, StandardCharsets.UTF_8);
-
-                // Cut last directory name in path
                 if (i > 0) {
                     path = path
                             .substring(0, path.length() - names.get(i).length() - 1);
@@ -129,9 +126,8 @@ public class StorageService {
                 String url = encodedPath;
 
                 breadCrumb.setName(name);
-                breadCrumb.setUrl(url);
+                breadCrumb.setPath(url);
 
-                // Set current bread crumb
                 if (!currentBreadCrumb) {
                     breadCrumb.setCurrent(true);
                     currentBreadCrumb = true;
@@ -143,7 +139,7 @@ public class StorageService {
         Breadcrumb breadCrumbMainPage = new Breadcrumb();
 
         breadCrumbMainPage.setName("/");
-        breadCrumbMainPage.setUrl("");
+        breadCrumbMainPage.setPath("");
 
         if (!currentBreadCrumb) {
             breadCrumbMainPage.setCurrent(true);
@@ -154,7 +150,6 @@ public class StorageService {
 
     }
     public Map<String, List<String>> getDirectory(String path, User user) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        System.out.println(path);
         Iterable<Result<Item>> fileList = fileRepository.getFilesInDirectory(Utils.getUserDirectory(user)+path);
         List<String > directories = new ArrayList<>();
         List<String > files = new ArrayList<>();

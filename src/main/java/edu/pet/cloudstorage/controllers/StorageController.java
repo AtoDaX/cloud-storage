@@ -122,11 +122,20 @@ public class StorageController {
 
     @GetMapping("/download")
     public void download(@AuthenticationPrincipal User user,
+                           Model model,
                            @RequestParam(required = false, defaultValue = "") String path,
                            @RequestParam String name,
                            HttpServletResponse response) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         path = URLDecoder.decode(path, StandardCharsets.UTF_8);
-        MultipartFile file = storageService.downloadFile(path, name, user);
+        MultipartFile file = null;
+        try {
+            file = storageService.downloadFile(path, name, user);
+        } catch (ErrorResponseException e){
+            //TODO вынести в переменную
+            response.sendRedirect("http://localhost:8080/storage?path=");
+            return;
+        }
+
         response.setContentType("multipart/form-data");
         response.setHeader("Content-disposition", "attachment;filename=" + name);
         try {
@@ -140,6 +149,10 @@ public class StorageController {
 
 
 
+    }
+
+    private String redirectToStorage(){
+        return "redirect:/storage";
     }
 
     /*@GetMapping("/downloadsad")
