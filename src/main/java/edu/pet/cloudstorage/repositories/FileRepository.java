@@ -4,10 +4,13 @@ import edu.pet.cloudstorage.model.User;
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.messages.Item;
+import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
@@ -32,6 +35,15 @@ public class FileRepository {
                 .bucket(BUCKET_NAME)
                 .object(objectName)
                 .stream(inputStream, -1, 10485760)
+                .contentType("application/octet-stream")
+                .build());
+    }
+
+    public void create(String path, InputStream inputStream) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        minioClient.putObject(PutObjectArgs.builder()
+                .bucket(BUCKET_NAME)
+                .object(path)
+                .stream(inputStream, 0, -1)
                 .contentType("application/octet-stream")
                 .build());
     }
@@ -65,7 +77,18 @@ public class FileRepository {
     }
 
 
-    public void get() {
 
+
+    public byte[] getFile(String path, String name) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+
+        try (InputStream stream = minioClient.getObject(
+                GetObjectArgs.builder()
+                        .bucket(BUCKET_NAME)
+                        .object(path+name)
+                        .build())) {
+            return IOUtils.toByteArray(stream);
+        }
     }
+
+
 }

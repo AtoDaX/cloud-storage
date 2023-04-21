@@ -15,12 +15,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -59,8 +57,55 @@ public class StorageService {
 
     public void createDirectory(String path, String name, User user) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
 
-        fileRepository.upload(Utils.getUserDirectory(user) + path + name + "/", new ByteArrayInputStream(new byte[]{}));
+        fileRepository.create(Utils.getUserDirectory(user) + path + name + "/", new ByteArrayInputStream(new byte[]{}));
 
+
+    }
+
+    public MultipartFile downloadFile(String path, String fileName, User user) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        System.out.println(path);
+        byte[] bytes = fileRepository.getFile(Utils.getUserDirectory(user)+path, fileName);
+        return new MultipartFile() {
+            @Override
+            public String getName() {
+                return fileName;
+            }
+
+            @Override
+            public String getOriginalFilename() {
+                return fileName;
+            }
+
+            @Override
+            public String getContentType() {
+                return "multipart/form-data";
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return bytes==null || bytes.length==0;
+            }
+
+            @Override
+            public long getSize() {
+                return bytes.length;
+            }
+
+            @Override
+            public byte[] getBytes() throws IOException {
+                return bytes;
+            }
+
+            @Override
+            public InputStream getInputStream() throws IOException {
+                return new ByteArrayInputStream(bytes);
+            }
+
+            @Override
+            public void transferTo(File dest) throws IOException, IllegalStateException {
+                new FileOutputStream(dest).write(bytes);
+            }
+        };
 
     }
 
@@ -92,6 +137,8 @@ public class StorageService {
 
 
     }
+
+
 
 
 }

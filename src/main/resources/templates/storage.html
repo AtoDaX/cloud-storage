@@ -8,7 +8,7 @@
   <title>Storage</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg bg-body-tertiary mb-5">
+<nav class="navbar navbar-expand-lg bg-body-tertiary mb-5 ">
   <div class="container-fluid">
     <a class="navbar-brand" th:href="@{/}">Cloud Storage</a>
     <form class="d-flex input-group w-auto">
@@ -70,8 +70,8 @@
   <div class="row ">
 
     <div class="col-2 align-content-center">
-      <div class="card " style="width: 8rem;">
-        <a th:href="@{#}"><img th:src="@{images/add-folder.png}" class="card-img-top" alt="Add folder"></a>
+      <div class="card mb-3" style="width: 8rem;">
+        <a th:href="@{'/storage/new-directory?path='+${path}}"><img th:src="@{images/add-folder.png}" class="card-img-top" alt="Add folder"></a>
         <div class="card-body">
 
           <div class="dropdown">
@@ -93,8 +93,8 @@
     </div>
 
     <div th:each="browseDirectory: ${allDirectories}" class="col-2 align-content-center ">
-      <div  class="card" style="width: 8rem;">
-        <a th:href="@{#}"><img th:src="@{images/browse-folder.png}" class="card-img-top" th:alt="${browseDirectory}"></a>
+      <div  class="card mb-3" style="width: 8rem;">
+        <a th:href="@{'/storage?path=' + ${path} + ${browseDirectory}+'%2F'}"><img th:src="@{images/browse-folder.png}" class="card-img-top" th:alt="${browseDirectory}"></a>
         <div class="card-body">
           <h6 class="card-title"> <a th:href="@{'/storage?path=' + ${path} + ${browseDirectory}+'%2F'}" th:text="${browseDirectory}">Folder name</a></h6>
         </div>
@@ -102,10 +102,10 @@
     </div>
 
     <div th:each="browseFile: ${allFiles}" class="col-2 align-content-center ">
-      <div  class="card" style="width: 8rem;">
-        <a th:href="@{#}"><img th:src="@{images/file.png}" class="card-img-top" th:alt="${browseFile}"></a>
+      <div  class="card mb-3" style="width: 8rem;">
+        <a th:href="@{'/storage/download?path=' + ${path} + '&name=' + ${browseFile} }"><img th:src="@{images/file.png}" class="card-img-top" th:alt="${browseFile}"></a>
         <div class="card-body">
-          <h6 class="card-title"> <a th:href="@{#}" th:text="${browseFile}">File name</a></h6>
+          <h6 class="card-title"> <a th:href="@{'/storage/download?path=' + ${path} + '&name=' + ${browseFile} }" th:text="${browseFile}">File name</a></h6>
         </div>
       </div>
     </div>
