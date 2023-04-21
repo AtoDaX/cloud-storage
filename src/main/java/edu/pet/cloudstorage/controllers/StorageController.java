@@ -57,7 +57,7 @@ public class StorageController {
         List<String> allFiles = allItems.get("file");
 
 
-
+        model.addAttribute("breadcrumbs", storageService.getBreadcrumbs(path));
         model.addAttribute("newFolder", newFolder);
         model.addAttribute("path", URLEncoder.encode(path, StandardCharsets.UTF_8));
         model.addAttribute("allDirectories", allDirectories);

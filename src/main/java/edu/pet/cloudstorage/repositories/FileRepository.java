@@ -44,7 +44,6 @@ public class FileRepository {
                 .bucket(BUCKET_NAME)
                 .object(path)
                 .stream(inputStream, 0, -1)
-                .contentType("application/octet-stream")
                 .build());
     }
 

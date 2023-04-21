@@ -1,5 +1,6 @@
 package edu.pet.cloudstorage.services;
 
+import edu.pet.cloudstorage.dto.Breadcrumb;
 import edu.pet.cloudstorage.dto.DirectoryDTO;
 import edu.pet.cloudstorage.dto.FileDTO;
 
@@ -19,12 +20,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class StorageService {
@@ -109,6 +109,50 @@ public class StorageService {
 
     }
 
+    public Deque<Breadcrumb> getBreadcrumbs(String path){
+        Deque<Breadcrumb> breadCrumbs = new ArrayDeque<>();
+        boolean currentBreadCrumb = false;
+        if (path.length()!=0){
+            List<String> names = List.of(path.split("/"));
+            for (int i = names.size() - 1; i >= 0; i--) {
+                Breadcrumb breadCrumb = new Breadcrumb();
+
+                String encodedPath = URLEncoder.encode(path, StandardCharsets.UTF_8);
+
+                // Cut last directory name in path
+                if (i > 0) {
+                    path = path
+                            .substring(0, path.length() - names.get(i).length() - 1);
+                }
+
+                String name = names.get(i);
+                String url = encodedPath;
+
+                breadCrumb.setName(name);
+                breadCrumb.setUrl(url);
+
+                // Set current bread crumb
+                if (!currentBreadCrumb) {
+                    breadCrumb.setCurrent(true);
+                    currentBreadCrumb = true;
+                }
+                breadCrumbs.push(breadCrumb);
+            }
+
+        }
+        Breadcrumb breadCrumbMainPage = new Breadcrumb();
+
+        breadCrumbMainPage.setName("/");
+        breadCrumbMainPage.setUrl("");
+
+        if (!currentBreadCrumb) {
+            breadCrumbMainPage.setCurrent(true);
+        }
+        breadCrumbs.push(breadCrumbMainPage);
+
+        return breadCrumbs;
+
+    }
     public Map<String, List<String>> getDirectory(String path, User user) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         System.out.println(path);
         Iterable<Result<Item>> fileList = fileRepository.getFilesInDirectory(Utils.getUserDirectory(user)+path);
