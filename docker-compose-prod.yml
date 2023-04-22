@@ -6,7 +6,7 @@ services:
     image: mysql:8.0
 
     env_file:
-      - mysql.env
+      - secret.env
     ports:
       - '3306:3306'
     volumes:
@@ -25,7 +25,7 @@ services:
     image: quay.io/minio/minio
     command: server --console-address ":9001" /data/
     env_file:
-      - minio.env
+      - secret.env
     ports:
       - "9000:9000"
       - "9001:9001"
@@ -46,7 +46,7 @@ services:
       - mysql
       - minio
     env_file:
-      - app.env
+      - secret.env
     image: cloud
     ports:
       - '8080:8080'

@@ -1,16 +1,11 @@
 package edu.pet.cloudstorage.repositories;
 
-import edu.pet.cloudstorage.model.User;
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.messages.Item;
 import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
@@ -35,11 +30,12 @@ public class FileRepository {
                 .bucket(BUCKET_NAME)
                 .object(objectName)
                 .stream(inputStream, -1, 10485760)
-                .contentType("application/octet-stream")
+                .contentType(FILE_TYPE)
                 .build());
     }
 
     public void create(String path, InputStream inputStream) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+
         minioClient.putObject(PutObjectArgs.builder()
                 .bucket(BUCKET_NAME)
                 .object(path)
@@ -48,6 +44,7 @@ public class FileRepository {
     }
 
     public Iterable<Result<Item>> getFilesInDirectory(String path) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+
         Iterable<Result<Item>> results = minioClient.listObjects(
                 ListObjectsArgs.builder()
                         .bucket(BUCKET_NAME)
@@ -57,12 +54,6 @@ public class FileRepository {
 
     }
 
-
-
-
-
-
-
     public void remove(String path, String name) {
         RemoveObjectArgs.builder().bucket(BUCKET_NAME)
                         .object(path+name).build();
@@ -70,13 +61,9 @@ public class FileRepository {
 
     }
 
-
     public void rename() {
 
     }
-
-
-
 
     public byte[] getFile(String path, String name) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
 

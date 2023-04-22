@@ -1,7 +1,6 @@
 package edu.pet.cloudstorage.services;
 
 import edu.pet.cloudstorage.dto.RegistrationDTO;
-import edu.pet.cloudstorage.dto.UserDTO;
 import edu.pet.cloudstorage.model.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 

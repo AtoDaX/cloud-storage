@@ -9,14 +9,11 @@ import io.minio.errors.*;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -43,9 +40,11 @@ public class StorageController {
         DirectoryDTO directory = new DirectoryDTO();
         NewFolderDto newFolder= new NewFolderDto();
         path = URLDecoder.decode(path,StandardCharsets.UTF_8);
+
         if (path.equals("/")){
             path="";
         }
+
         file.setPath(path);
         directory.setPath(path);
         Map<String, List<String>> allItems = storageService.getDirectory(path, user);
@@ -62,6 +61,7 @@ public class StorageController {
         model.addAttribute("user",user);
         model.addAttribute("file", file);
         model.addAttribute("directory", directory);
+
         return "storage";
     }
 
@@ -69,16 +69,14 @@ public class StorageController {
     public String uploadFile(@AuthenticationPrincipal User user,
                          FileDTO file,
                              @RequestParam(required = false, defaultValue = "") String path) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+
         if (file==null){
             return "redirect:/storage";
         }
 
         path = URLDecoder.decode(path,StandardCharsets.UTF_8);
-
         file.setPath(path);
         storageService.uploadFile(file, user);
-
-
 
         return "redirect:/storage?path=" + URLEncoder.encode(path, StandardCharsets.UTF_8);
 
@@ -88,14 +86,15 @@ public class StorageController {
     public String uploadDirectory(@AuthenticationPrincipal User user,
                          DirectoryDTO directory,
                                   @RequestParam(required = false, defaultValue = "") String path) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+
         if (directory==null){
             return "redirect:/storage";
         }
+
         path = URLDecoder.decode(path,StandardCharsets.UTF_8);
         directory.setPath(path);
         storageService.uploadDirectory(directory, user);
         System.out.println(directory.getPath());
-
 
         return "redirect:/storage?path="+URLEncoder.encode(path,StandardCharsets.UTF_8);
 
@@ -107,10 +106,11 @@ public class StorageController {
                                   @RequestParam(required = false, defaultValue = "") String path) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
 
         path = URLDecoder.decode(path,StandardCharsets.UTF_8);
+
         if (name.isEmpty() || name==null){
-            /*throw new RuntimeException("Incorrect directory name");*/
             return "redirect:/storage";
         }
+
         storageService.createDirectory(path, name, user);
 
         return "redirect:/storage?path="+URLEncoder.encode(path, StandardCharsets.UTF_8);
@@ -119,12 +119,13 @@ public class StorageController {
 
     @GetMapping("/download")
     public void download(@AuthenticationPrincipal User user,
-                           Model model,
                            @RequestParam(required = false, defaultValue = "") String path,
                            @RequestParam String name,
                            HttpServletResponse response) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+
         path = URLDecoder.decode(path, StandardCharsets.UTF_8);
         MultipartFile file = null;
+
         try {
             file = storageService.downloadFile(path, name, user);
         } catch (ErrorResponseException e){

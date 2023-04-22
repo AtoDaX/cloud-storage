@@ -35,15 +35,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public edu.pet.cloudstorage.model.User save(RegistrationDTO userDTO) {
+
         if (roleRepository.findByName("USER_ROLE") == null){
             roleRepository.save(new Role("USER_ROLE"));
         }
+
         List<Role> roles = new ArrayList<>();
         roles.add(roleRepository.findByName("USER_ROLE"));
         User user = new User();
         user.setRoles(roles);
         user.setUsername(userDTO.getUsername());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+
         return userRepository.save(user);
     }
 
@@ -69,6 +72,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private Collection < ? extends GrantedAuthority> mapRolesToAuthorities(Collection <Role> roles) {
+
         Collection < ? extends GrantedAuthority> mapRoles = roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
