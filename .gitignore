@@ -1,10 +1,15 @@
 HELP.md
+docker-compose-dev.yml
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-
+app.env
+minio.env
+mysql.env
+*.env
 ### STS ###
+
 .apt_generated
 .classpath
 .factorypath

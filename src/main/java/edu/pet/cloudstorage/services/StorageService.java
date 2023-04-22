@@ -54,15 +54,12 @@ public class StorageService {
     }
 
     public void createDirectory(String path, String name, User user) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        File hello = new File("hello.txt");
-
         fileRepository.create(Utils.getUserDirectory(user) + path + name + "/", new ByteArrayInputStream(new byte[]{}));
 
 
     }
 
     public MultipartFile downloadFile(String path, String fileName, User user) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        System.out.println(path);
         byte[] bytes = fileRepository.getFile(Utils.getUserDirectory(user)+path, fileName);
         return new MultipartFile() {
             @Override

@@ -2,14 +2,14 @@ server:
   port: 8080
 
 minio:
-  endpoint: http://127.0.0.1:9000
-  accessKey: 0KMBweoaAXG0KrcV
-  secretKey: rTvuCpiXnFq9zU1z0oQQKRIieey7wS4V
-  bucketName: user-files
+  endpoint: ${MINIO_ENDPOINT:http://127.0.0.1:9000}
+  accessKey: ${ACCESS_KEY}
+  secretKey: ${SECRET_KEY}
+  bucketName: ${BUCKET_NAME}
 spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: prod
   thymeleaf:
     cache: false
   datasource:
@@ -17,15 +17,16 @@ spring:
     generate-unique-name: false
     hikari:
       username: root
-      password: password
-    url: jdbc:mysql://localhost:3306/USER_INFO?useSSL=false&allowPublicKeyRetrieval=true
+      password: ${MYSQL_ROOT_PASSWORD}
+    url: jdbc:mysql://mysql:3306/USER_INFO?useSSL=false&allowPublicKeyRetrieval=true
   session:
     redis:
       save-mode: always
   data:
     redis:
-      host: localhost
       port: 6379
+      host: redis
+
   jpa:
     hibernate:
       ddl-auto: update

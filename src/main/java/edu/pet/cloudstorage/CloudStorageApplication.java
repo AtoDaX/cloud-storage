@@ -32,22 +32,6 @@ public class CloudStorageApplication {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public ApplicationRunner dataLoader(@Autowired MinioClient minioClient) {
 
-        return args -> {
-
-
-            boolean isBucketExists = minioClient.bucketExists(BucketExistsArgs.builder().bucket("user-files").build());
-            if (!isBucketExists){
-                minioClient.makeBucket(
-                        MakeBucketArgs.builder()
-                                .bucket("user-files")
-                                .build());
-            }
-
-
-        };
-    }
 
 }

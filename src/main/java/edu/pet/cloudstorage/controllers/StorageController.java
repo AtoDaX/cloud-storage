@@ -21,9 +21,6 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -52,7 +49,7 @@ public class StorageController {
         file.setPath(path);
         directory.setPath(path);
         Map<String, List<String>> allItems = storageService.getDirectory(path, user);
-        //TODO вынести dir+files в общие константы
+
         List<String> allDirectories = allItems.get("dir");
         List<String> allFiles = allItems.get("file");
 
@@ -131,7 +128,6 @@ public class StorageController {
         try {
             file = storageService.downloadFile(path, name, user);
         } catch (ErrorResponseException e){
-            //TODO вынести в переменную
             response.sendRedirect("http://localhost:8080/storage?path=");
             return;
         }
@@ -145,37 +141,5 @@ public class StorageController {
         }catch (IOException e) {
             throw new RuntimeException("IOError writing file to output stream");
         }
-
-
-
-
     }
-
-    private String redirectToStorage(){
-        return "redirect:/storage";
-    }
-
-    /*@GetMapping("/downloadsad")
-    public void getFile(@PathVariable("file_name") String fileName, HttpServletResponse response) {
-        // Прежде всего стоит проверить, если необходимо, авторизован ли пользователь и имеет достаточно прав на скачивание файла. Если нет, то выбрасываем здесь Exception
-
-        //Авторизованные пользователи смогут скачать файл
-        Path file = Paths.get(PathUtil.getUploadedFolder(), fileName);
-        if (Files.exists(file)){
-            response.setHeader("Content-disposition", "attachment;filename=" + fileName);
-
-            response.setContentType("multipart/form-data");
-
-            try {
-                Files.copy(file, response.getOutputStream());
-                response.getOutputStream().flush();
-
-            } catch (IOException e) {
-                throw new RuntimeException("IOError writing file to output stream");
-            }
-        }
-    }*/
-
-
-
 }
